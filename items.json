@@ -1,0 +1,28 @@
+[
+  {
+    "id": "item-001",
+    "title": "Wool Coat (Size M)",
+    "price": 85,
+    "currency": "CAD",
+    "category": "Clothing",
+    "condition": "Very good",
+    "status": "available",
+    "description": "Warm wool coat, clean lining, classic cut. Fits like a medium. Pickup in Montreal or shipping at cost.",
+    "photos": ["assets/item-001.jpg"],
+    "paypalUrl": "https://www.paypal.me/YOURPAYPAL/85",
+    "etransferNote": "Wool Coat (Size M) — item-001"
+  },
+  {
+    "id": "item-002",
+    "title": "Desk Lamp",
+    "price": 20,
+    "currency": "CAD",
+    "category": "Home",
+    "condition": "Good",
+    "status": "sold",
+    "description": "Works perfectly. Small cosmetic scuff on base.",
+    "photos": ["assets/item-002.jpg"],
+    "paypalUrl": "https://www.paypal.me/YOURPAYPAL/20",
+    "etransferNote": "Desk Lamp — item-002"
+  }
+]

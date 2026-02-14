@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Shop</title>
+  <meta name="description" content="A simple shop to sell my items." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div>
+        <h1 class="brand">Your Shop</h1>
+        <p class="tagline">Curated items — first come, first served.</p>
+      </div>
+
+      <div class="header-actions">
+        <a class="pill" href="#how-to-buy">How to buy</a>
+        <a class="pill pill-ghost" href="#contact">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="controls" aria-label="Shop controls">
+      <div class="search">
+        <label class="sr-only" for="q">Search items</label>
+        <input id="q" type="search" placeholder="Search (e.g., jacket, size M, brand…)" autocomplete="off" />
+      </div>
+
+      <div class="filters">
+        <label class="sr-only" for="category">Category</label>
+        <select id="category">
+          <option value="all">All categories</option>
+        </select>
+
+        <label class="sr-only" for="sort">Sort</label>
+        <select id="sort">
+          <option value="newest">Newest</option>
+          <option value="price-asc">Price: low → high</option>
+          <option value="price-desc">Price: high → low</option>
+        </select>
+      </div>
+    </section>
+
+    <section>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+      <div id="grid" class="grid" aria-label="Items"></div>
+    </section>
+
+    <section id="how-to-buy" class="info-card">
+      <h2>How to buy</h2>
+      <ol>
+        <li>Open an item → click <b>Buy</b>.</li>
+        <li>You’ll either pay via PayPal or message me for e-transfer.</li>
+        <li>First confirmed payment gets it. I’ll mark it as sold.</li>
+      </ol>
+      <p class="fineprint">
+        No checkout on this site — it’s a simple catalog hosted on GitHub Pages.
+      </p>
+    </section>
+
+    <section id="contact" class="info-card">
+      <h2>Contact</h2>
+      <p>
+        Email:
+        <a id="contactEmail" href="#">your@email.com</a>
+      </p>
+      <p class="fineprint">
+        Tip: If you use e-transfer, include the item name in the note.
+      </p>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div id="modalBackdrop" class="modal-backdrop" hidden></div>
+  <dialog id="modal" class="modal" aria-label="Item details">
+    <button id="closeModal" class="icon-btn" aria-label="Close">✕</button>
+
+    <div class="modal-body">
+      <div class="modal-media">
+        <img id="modalImg" alt="" />
+        <div id="thumbs" class="thumbs" aria-label="More photos"></div>
+      </div>
+
+      <div class="modal-details">
+        <div class="modal-top">
+          <h3 id="modalTitle"></h3>
+          <div class="price-row">
+            <span id="modalPrice" class="price"></span>
+            <span id="modalBadge" class="badge"></span>
+          </div>
+        </div>
+
+        <p id="modalDesc" class="desc"></p>
+
+        <dl class="meta">
+          <div><dt>Category</dt><dd id="modalCategory"></dd></div>
+          <div><dt>Condition</dt><dd id="modalCondition"></dd></div>
+        </dl>
+
+        <div class="cta">
+          <a id="buyBtn" class="btn" target="_blank" rel="noreferrer">Buy</a>
+          <a id="messageBtn" class="btn btn-ghost">Message</a>
+        </div>
+
+        <p class="fineprint">
+          Shipping/pickup details are confirmed by message after payment.
+        </p>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
