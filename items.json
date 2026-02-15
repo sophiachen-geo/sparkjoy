@@ -1,7 +1,7 @@
 [
   {
     "id": "apple-61w-01",
-    "title": "Apple 61W USB-C Power Adapter (with power cord)",
+    "title": "Apple 61W USB-C Power Adapter, with power cord",
     "price": 50,
     "currency": "CAD",
     "category": "Electronics",
@@ -9,14 +9,14 @@
     "status": "available",
     "description": "Apple 61W USB-C power adapter. Includes the AC power cord (no USB-C cable). Gently used, works perfectly.",
     "photos": [
-      "assets/apple-61w-with-cord-1.jpg"
+      "assets/apple-61w-with-cord-1"
     ],
-    "paypalUrl": "https://www.paypal.me/YOURPAYPAL/50",
-    "etransferNote": "Apple 61W adapter w/ cord — apple-61w-01"
+    "paypalUrl": "https://www.paypal.me/sophiachengeo",
+    "etransferNote": "Apple 61W adapter with cord — apple-61w-01"
   },
   {
     "id": "apple-61w-02",
-    "title": "Apple 61W USB-C Power Adapter (no power cord)",
+    "title": "Apple 61W USB-C Power Adapter, no power cord",
     "price": 50,
     "currency": "CAD",
     "category": "Electronics",
@@ -24,10 +24,10 @@
     "status": "available",
     "description": "Apple 61W USB-C power adapter only. No AC power cord and no USB-C cable. Gently used, works perfectly.",
     "photos": [
-      "assets/apple-61w-no-cord-1.jpg"
+      "assets/apple-61w-no-cord-1"
     ],
-    "paypalUrl": "https://www.paypal.me/YOURPAYPAL/50",
-    "etransferNote": "Apple 61W adapter (no cord) — apple-61w-02"
+    "paypalUrl": "https://www.paypal.me/sophiachengeo",
+    "etransferNote": "Apple 61W adapter no cord — apple-61w-02"
   }
 ]
 
