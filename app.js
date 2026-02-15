@@ -5,7 +5,7 @@ const state = {
   q: "",
   category: "all",
   sort: "newest",
-  contactEmail: "your@email.com" // CHANGE THIS
+  contactEmail: "sophiazilisha@email.com" // CHANGE THIS
 };
 
 const els = {
@@ -168,17 +168,20 @@ function openModal(it) {
 function buildMailto(it) {
   const subject = encodeURIComponent(`Buying: ${it.title} (${it.id})`);
   const body = encodeURIComponent(
-`Hi! I’d like to buy this item:
+`Hi Sophia, I’d like to reserve/buy:
 
 - Item: ${it.title}
 - ID: ${it.id}
 - Price: ${money(it.price, it.currency || "CAD")}
 
-Payment: e-transfer or PayPal (your preference)
-Note for e-transfer: ${it.etransferNote || it.id}
+Reservation: I can e-transfer 50% now to sophiazilisha@hotmail.com.
+Pickup / meet-up details:
+- When: (date/time)
+- Where (Montreal area): (neighbourhood / hotel / address)
+Notes: (any questions)
 
 Thanks!`
-  );
+);
   return `mailto:${state.contactEmail}?subject=${subject}&body=${body}`;
 }
 
