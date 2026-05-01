@@ -141,10 +141,16 @@ Same pattern: branch `claude/edit-<id>`, change only what was asked, PR.
 - When you can't do something (e.g. extract photo bytes from a chat-attached image), say so plainly and propose the simplest workaround.
 - Run a quick local check before declaring done: `python3 -m http.server` and curl `/`, `/items.json`, etc.
 
-## Contact email
+## Payment recipients & contact email
 
-Defined once in `app.js` as `CONTACT_EMAIL`. Same string used in:
-- `index.html` "How to buy" e-transfer line
-- `README.md` example block
+Two distinct emails:
 
-If the user changes it, update all three.
+- **Contact / Interac e-transfer recipient** — defined once in `app.js` as `CONTACT_EMAIL`. Used by:
+  - the contact link in `index.html` (rendered into `#contactEmail` by JS)
+  - the prefilled mailto subject/body for the modal "Email me" button
+  - the "How to buy" payment-recipients line in `index.html`
+  - the README example block
+
+- **PayPal recipient** — hardcoded in `index.html` inside the "How to buy" payment-recipients line. Not used elsewhere (the actual PayPal button URL lives per-item in `items.json` as `paypalUrl`).
+
+If the user changes either email, update all the spots above.
