@@ -96,6 +96,49 @@ You can also describe the change casually ("mark the apple adapter with cord as 
 
 Claude opens a PR with the changes. You tap **Merge pull request** on your phone. GitHub Pages redeploys automatically.
 
+### Optional: skip retyping with iOS Text Replacement
+
+iOS has a built-in feature that expands a short trigger into a long block of text. Set it up once and you can type a short word like `addprod` to drop the entire `/add-product` template into chat.
+
+**One-time setup**
+
+1. Open **Settings** on your iPhone.
+2. Tap **General** → **Keyboard** → **Text Replacement**.
+3. Tap **➕** in the top-right corner.
+4. In **Phrase**, paste:
+   ```
+   /add-product
+   title: 
+   shortDescription: 
+   description: 
+   price: 
+   currency: CAD
+   category: 
+   condition: 
+   status: available
+   photos: 
+   featured: 1
+   ```
+5. In **Shortcut**, type `addprod` (or any short trigger you'll remember — `sjadd`, `/ap`, anything not a real word).
+6. Tap **Save**.
+
+Repeat for `/set-status`:
+- **Phrase:** `/set-status   ` *(trailing spaces position the cursor for typing)*
+- **Shortcut:** `setstatus`
+
+**Using it**
+
+1. In any text field (Messages, Notes, this chat), type `addprod`.
+2. Tap space or accept the suggestion above the keyboard.
+3. The whole template expands. Fill in the blanks and send.
+
+**Tips**
+
+- Keep shortcuts short and weird so they never collide with real words. `addprod` is safe; `add` is not.
+- Text Replacement syncs across devices via iCloud — your iPad and Mac get it automatically.
+- To edit later: Settings → General → Keyboard → Text Replacement → tap the entry.
+- To delete: swipe left on the entry → Delete.
+
 ---
 
 ## Local helper (computer)
