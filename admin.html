@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Spark Joy — Local catalog helper</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* admin-only tweaks; the rest is shared with the public site */
+    .admin-wrap{ max-width: 980px; margin: 0 auto; padding: 24px 20px 60px }
+    .admin-banner{
+      background: var(--reserved-bg);
+      border: 1px solid rgba(176,125,18,.35);
+      color: #6b4d0a;
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .admin-banner b{ color: #4d3500 }
+    .mode-pill{
+      display: inline-block; font-size: 12px; font-weight: 700;
+      padding: 3px 8px; border-radius: 999px; margin-left: 6px;
+      background: var(--surface); border: 1px solid var(--line-strong); color: var(--text);
+    }
+    .mode-pill.local{ background: var(--available-bg); color: var(--available); border-color: rgba(47,125,82,.3) }
+    .mode-pill.public{ background: var(--sold-bg); color: var(--sold); border-color: rgba(160,57,42,.3) }
+
+    .panel{
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+    .panel h2{ margin: 0 0 12px; font-size: 18px; color: var(--accent-ink) }
+
+    .field{ display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px }
+    .field label{ font-size: 13px; color: var(--text-muted); font-weight: 600 }
+    .row-2{ display: grid; gap: 12px; grid-template-columns: 1fr }
+    @media (min-width: 720px){ .row-2{ grid-template-columns: 1fr 1fr } }
+
+    textarea{ min-height: 90px; resize: vertical; font: inherit }
+
+    .help{ font-size: 12px; color: var(--text-muted); margin: 4px 0 0 }
+    .err{ color: var(--sold); font-size: 13px; margin-top: 6px }
+
+    .toolbar{ display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px }
+
+    .item-list{
+      display: grid; gap: 8px;
+    }
+    .item-row{
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: 10px; align-items: center;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--surface-2);
+    }
+    .item-row .name{ min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+    .item-row select{ max-width: 160px }
+    .item-row .small-btn{
+      padding: 6px 12px; font-size: 13px; min-width: auto;
+    }
+
+    pre.json-out{
+      background: #1f1b16;
+      color: #f5e8d4;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      max-height: 360px;
+      overflow: auto;
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand-block">
+        <h1 class="brand">Spark Joy <span id="modePill" class="mode-pill">checking…</span></h1>
+        <p class="tagline">Local helper to add/edit items and update <code>items.json</code>. Not linked from the public site.</p>
+      </div>
+      <div class="header-actions">
+        <a class="pill pill-ghost" href="index.html">← Back to shop</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-wrap">
+    <div class="admin-banner">
+      <b>This is a local helper, not a secure admin panel.</b>
+      It stores nothing, sends nothing, and contains no credentials. Use it on your own machine to generate or update <code>items.json</code>, then commit the file to git as usual.
+      <span id="publicWarn" hidden><br><b>Public mode detected:</b> editing is disabled. You can preview and download an updated <code>items.json</code>, but cannot save in place.</span>
+    </div>
+
+    <!-- Load existing catalog -->
+    <section class="panel">
+      <h2>1. Load current catalog</h2>
+      <div class="toolbar">
+        <button id="loadFetch" class="btn btn-ghost">Load from items.json</button>
+        <label class="btn btn-ghost" for="loadFile" style="cursor:pointer">Or choose a file…</label>
+        <input id="loadFile" type="file" accept="application/json,.json" hidden />
+      </div>
+      <p class="help" id="loadStatus">Not loaded yet.</p>
+    </section>
+
+    <!-- Status workflow -->
+    <section class="panel">
+      <h2>2. Update status (available / reserved / sold)</h2>
+      <p class="help">Quick toggle for an existing item. Changes are reflected in the JSON output below.</p>
+      <div id="itemList" class="item-list" aria-live="polite"></div>
+    </section>
+
+    <!-- Add / edit form -->
+    <section class="panel">
+      <h2>3. Add a new item (or edit existing)</h2>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="f-id">ID / slug</label>
+          <input id="f-id" type="text" placeholder="e.g., teak-side-table-01" />
+          <p class="help">Lowercase, hyphenated. Used to identify the item and group its photos.</p>
+        </div>
+        <div class="field">
+          <label for="f-title">Title</label>
+          <input id="f-title" type="text" placeholder="e.g., Teak side table" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-shortDesc">Short description</label>
+        <input id="f-shortDesc" type="text" placeholder="One-liner shown in cards / previews" />
+      </div>
+
+      <div class="field">
+        <label for="f-desc">Long description</label>
+        <textarea id="f-desc" placeholder="Full details: dimensions, history, quirks, etc."></textarea>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="f-price">Price</label>
+          <input id="f-price" type="number" min="0" step="1" placeholder="50" />
+        </div>
+        <div class="field">
+          <label for="f-currency">Currency</label>
+          <select id="f-currency">
+            <option value="CAD">CAD</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="f-category">Category</label>
+          <input id="f-category" type="text" list="categoryList" placeholder="e.g., Electronics" />
+          <datalist id="categoryList"></datalist>
+        </div>
+        <div class="field">
+          <label for="f-condition">Condition</label>
+          <input id="f-condition" type="text" list="conditionList" placeholder="e.g., Gently used" />
+          <datalist id="conditionList">
+            <option value="New / unused"></option>
+            <option value="Like new"></option>
+            <option value="Gently used"></option>
+            <option value="Used"></option>
+            <option value="Well-loved"></option>
+          </datalist>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="f-status">Status</label>
+          <select id="f-status">
+            <option value="available">Available</option>
+            <option value="reserved">Reserved</option>
+            <option value="sold">Sold</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-date">Date added</label>
+          <input id="f-date" type="date" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-photos">Photos (one path per line)</label>
+        <textarea id="f-photos" placeholder="assets/teak-side-table-01-1.jpg
+assets/teak-side-table-01-2.jpg"></textarea>
+        <p class="help">Save the actual image files into the <code>assets/</code> folder using the ID-based naming pattern, e.g. <code>assets/&lt;id&gt;-1.jpg</code>.</p>
+      </div>
+
+      <div class="field">
+        <label for="f-featured">Featured photo</label>
+        <input id="f-featured" type="text" placeholder="assets/teak-side-table-01-1.jpg" />
+        <p class="help">If left empty, the first photo is used.</p>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="f-paypal">PayPal URL (optional)</label>
+          <input id="f-paypal" type="url" placeholder="https://www.paypal.me/yourhandle" />
+        </div>
+        <div class="field">
+          <label for="f-etransfer">E-transfer note (optional)</label>
+          <input id="f-etransfer" type="text" placeholder="Item name — id" />
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <button id="addOrUpdate" class="btn">Add / update item</button>
+        <button id="resetForm" class="btn btn-ghost">Clear form</button>
+      </div>
+      <p id="formError" class="err" hidden></p>
+    </section>
+
+    <!-- Output -->
+    <section class="panel">
+      <h2>4. Updated items.json</h2>
+      <p class="help">Preview, copy, or download. Replace your repo's <code>items.json</code> with this and commit.</p>
+      <div class="toolbar" style="margin-bottom: 10px">
+        <button id="copyJson" class="btn btn-ghost">Copy</button>
+        <button id="downloadJson" class="btn">Download items.json</button>
+      </div>
+      <pre id="jsonOut" class="json-out" aria-live="polite">[]</pre>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>
