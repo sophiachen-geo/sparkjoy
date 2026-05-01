@@ -148,3 +148,5 @@ Defined once in `app.js` as `CONTACT_EMAIL`. Same string used in:
 - `README.md` example block
 
 If the user changes it, update all three.
+
+PayPal payments are routed per-item via the `paypalUrl` field in `items.json` (a `paypal.me` link). The recipient name shown to buyers comes from whoever owns that paypal.me handle — no separate email address is displayed in the UI.

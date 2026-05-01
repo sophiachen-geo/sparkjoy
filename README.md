@@ -226,4 +226,6 @@ The site uses one contact email defined at the top of `app.js`:
 const CONTACT_EMAIL = "sophiazilisha@hotmail.com";
 ```
 
-Change it once there and it updates the contact link, the mailto buttons, and the e-transfer instructions in the email body.
+Change it once there and it updates the contact link, the mailto buttons, and the e-transfer instructions in the email body. Also update the e-transfer line under "How to buy" in `index.html` if the address changes.
+
+PayPal payments are routed per-item via the `paypalUrl` field in `items.json` (a `paypal.me` link). The recipient name shown to buyers comes from whoever owns that paypal.me handle — no separate email is displayed in the UI.

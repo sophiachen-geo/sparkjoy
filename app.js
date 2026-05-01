@@ -274,13 +274,22 @@ function openModal(it) {
     });
   }
 
-  // Buy / message actions
+  // Buy / email actions.
+  // The buy button is PayPal-only — hide it entirely when no paypalUrl is set,
+  // so "Pay with PayPal" never points at something that isn't PayPal.
   const isPurchasable = status === "available";
-  els.buyBtn.textContent = status === "sold" ? "Sold" : (status === "reserved" ? "Reserved" : "Buy");
-  els.buyBtn.setAttribute("aria-disabled", isPurchasable ? "false" : "true");
-
   const paypal = it.paypalUrl || "";
-  els.buyBtn.href = isPurchasable ? (paypal || buildMailto(it)) : "#";
+
+  if (!paypal) {
+    els.buyBtn.style.display = "none";
+  } else {
+    els.buyBtn.style.display = "";
+    els.buyBtn.textContent = status === "sold"
+      ? "Sold"
+      : status === "reserved" ? "Reserved" : "Pay with PayPal";
+    els.buyBtn.setAttribute("aria-disabled", isPurchasable ? "false" : "true");
+    els.buyBtn.href = isPurchasable ? paypal : "#";
+  }
 
   els.messageBtn.href = buildMailto(it);
 
@@ -288,19 +297,21 @@ function openModal(it) {
 }
 
 function buildMailto(it) {
-  const subject = encodeURIComponent(`Buying: ${it.title} (${it.id})`);
+  const subject = encodeURIComponent(`Interested: ${it.title} (${it.id})`);
   const body = encodeURIComponent(
-`Hi Sophia, I'd like to reserve/buy:
+`Hi Sophia, I'm interested in:
 
 - Item: ${it.title}
 - ID: ${it.id}
 - Price: ${money(it.price, it.currency || "CAD")}
 
-Reservation: I can e-transfer 50% now to ${CONTACT_EMAIL}.
-Pickup / meet-up details:
-- When: (date/time)
-- Where (Montreal area): (neighbourhood / hotel / address)
-Notes: (any questions)
+About my pickup:
+- Name:
+- Preferred day/time:
+- Spot: (any STM metro/REM station on the island, or SANAAQ/BANQ library)
+- Or shipping? happy to discuss
+
+Questions / notes:
 
 Thanks!`
   );
