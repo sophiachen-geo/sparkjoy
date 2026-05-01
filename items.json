@@ -1,5 +1,22 @@
 [
   {
+    "id": "teak-side-table-01",
+    "title": "Teak side table",
+    "shortDescription": "Mid-century, oiled.",
+    "description": "50 × 40 × 55 cm. Minor scuffs on the legs.",
+    "price": 80,
+    "currency": "CAD",
+    "category": "Furniture",
+    "condition": "Gently used",
+    "status": "available",
+    "photos": [
+      "assets/teak-side-table-01-1.jpg",
+      "assets/teak-side-table-01-2.jpg"
+    ],
+    "featuredPhoto": "assets/teak-side-table-01-1.jpg",
+    "dateAdded": "2026-05-01"
+  },
+  {
     "id": "apple-61w-01",
     "title": "Apple 61W USB-C Power Adapter, with power cord",
     "shortDescription": "Apple 61W USB-C adapter, includes AC power cord.",
