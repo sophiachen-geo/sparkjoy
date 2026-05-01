@@ -3,18 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Your Shop</title>
-  <meta name="description" content="A simple shop to sell my items." />
+  <title>Spark Joy — secondhand catalog</title>
+  <meta name="description" content="A simple catalog of my secondhand items, available as I close my condo chapter and travel onward." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <div>
+      <div class="brand-block">
         <h1 class="brand">Spark Joy</h1>
-        <p class="tagline"> A secondhand store of my own used things — a simple catalog of what I’m selling as I close my condo chapter and travel onward.
-  From furniture to electronics, clothes to books (and everything in between), each item is ready for its next home.</p>
+        <p class="tagline">
+          A secondhand catalog of things I'm passing on as I close my condo chapter and travel onward — furniture, electronics, clothes, books, and more. Each item is ready for its next home.
+        </p>
       </div>
 
       <div class="header-actions">
@@ -37,6 +38,14 @@
           <option value="all">All categories</option>
         </select>
 
+        <label class="sr-only" for="statusFilter">Status</label>
+        <select id="statusFilter">
+          <option value="all">All statuses</option>
+          <option value="available">Available</option>
+          <option value="reserved">Reserved</option>
+          <option value="sold">Sold</option>
+        </select>
+
         <label class="sr-only" for="sort">Sort</label>
         <select id="sort">
           <option value="newest">Newest</option>
@@ -47,29 +56,26 @@
     </section>
 
     <section>
-      <div id="status" class="status" role="status" aria-live="polite"></div>
+      <div id="status" class="status-line" role="status" aria-live="polite"></div>
       <div id="grid" class="grid" aria-label="Items"></div>
     </section>
-
 
     <section id="how-to-buy" class="info-card">
       <h2>How to buy</h2>
       <ol>
-        <li>Open an item → click <b>Message</b> (or <b>Buy</b>) to email me with the item name and when/where you’d like it.</li>
-        <li>To reserve: e-transfer <b>50%</b> to <b>sophiazilisha@hotmail.com</b>.</li>
+        <li>Open an item → tap <b>Message</b> (or <b>Buy</b>) to email me with the item name and when/where you'd like to pick it up.</li>
+        <li>To reserve: e-transfer <b>50%</b> to <b>thegoldenratio.geo@icloud.com</b>.</li>
         <li>Once I confirm the hold, you can e-transfer the remaining <b>50%</b> at pickup (or by arrangement).</li>
       </ol>
       <p class="fineprint">
-        Pickup is in the Montreal area. Other locations can be discussed — I’ll be travelling within North America and Europe over the next few months.
+        Pickup is in the Montreal area. Other locations can be discussed — I'll be travelling within North America and Europe over the next few months.
       </p>
     </section>
-
 
     <section id="contact" class="info-card">
       <h2>Contact</h2>
       <p>
-        Email:
-        <a id="contactEmail" href="#">your@email.com</a>
+        Email: <a id="contactEmail" href="#">your@email.com</a>
       </p>
       <p class="fineprint">
         Tip: If you use e-transfer, include the item name in the note.
@@ -77,13 +83,19 @@
     </section>
   </main>
 
+  <footer class="site-footer">
+    <div class="container">
+      <p>Made with care · Spark Joy</p>
+    </div>
+  </footer>
+
   <!-- Modal -->
   <div id="modalBackdrop" class="modal-backdrop" hidden></div>
   <dialog id="modal" class="modal" aria-label="Item details">
     <button id="closeModal" class="icon-btn" aria-label="Close">✕</button>
 
     <div class="modal-body">
-      <div class="modal-media">
+      <div class="modal-media" id="modalMedia">
         <img id="modalImg" alt="" />
         <div id="thumbs" class="thumbs" aria-label="More photos"></div>
       </div>
