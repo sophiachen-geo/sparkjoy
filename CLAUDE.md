@@ -77,18 +77,28 @@ currency: <CAD|USD|EUR|GBP, default CAD>
 category: <required>
 condition: <e.g. Gently used>
 status: <available|reserved|sold, default available>
-photos: <comma-separated paths under assets/_inbox/, in display order>
+photos: <comma-separated photo references, in display order — see "Photos field" below>
 featured: <1-based index into photos, default 1>
 id: <optional; auto-derived from title if omitted>
 paypalUrl: <optional>
 etransferNote: <optional>
 ```
 
+**Photos field**
+
+Each entry in `photos:` can be written in any of these forms — they all resolve to the same file:
+
+- Bare filename: `IMG_1234.jpeg` *(preferred — shortest)*
+- With inbox prefix: `assets/_inbox/IMG_1234.jpeg`
+- With or without leading slash, with any common image extension (`.jpg`, `.jpeg`, `.png`, `.webp`, case-insensitive)
+
+If a referenced photo isn't found in `assets/_inbox/`, ask the user which file they meant rather than guessing.
+
 Steps Claude takes:
 
 1. Pull `main`, branch off `claude/add-<id>`.
 2. If `id` is missing, slugify the title (lowercase, hyphenated, alphanumeric only). Append `-01`, `-02`, … only if needed to disambiguate from existing IDs.
-3. For each listed photo in `assets/_inbox/`:
+3. Resolve each photo reference to a real file in `assets/_inbox/`. For each:
    - `git mv` it to `assets/<id>-<n>.jpg` (preserving the file extension if not `.jpg`/`.jpeg`; rename `.jpeg` → `.jpg`).
    - Set `featuredPhoto` to the photo at `featured` (default 1).
 4. Append the new item to `items.json` (newest first is fine; the site sorts by `dateAdded`). Set `dateAdded` to today (UTC date is OK).
