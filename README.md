@@ -218,13 +218,14 @@ Each item in `items.json` looks like this:
 
 Only `id`, `title`, `price`, `currency`, `category`, `condition`, and `status` are needed for the site to render. Photos are optional — missing or broken images get a clean fallback. The rest are optional metadata.
 
-## Payment recipients & contact email
+## Changing the contact email
 
-The site uses **two distinct emails**:
+The site uses one contact email defined at the top of `app.js`:
 
-| Purpose | Email | Where it lives |
-|---|---|---|
-| Contact link, mailto buttons, Interac e-transfer | `sophiazilisha@hotmail.com` | `CONTACT_EMAIL` constant at the top of `app.js`, plus the "How to buy" payment-recipients line in `index.html` |
-| PayPal recipient (display only) | `thegoldenratio.geo@icloud.com` | "How to buy" payment-recipients line in `index.html` |
+```js
+const CONTACT_EMAIL = "sophiazilisha@hotmail.com";
+```
 
-To change either, edit it in the spots listed above. The actual PayPal button on each item is driven per-item by the `paypalUrl` field in `items.json` (a `paypal.me` link).
+Change it once there and it updates the contact link, the mailto buttons, and the e-transfer instructions in the email body. Also update the e-transfer line under "How to buy" in `index.html` if the address changes.
+
+PayPal payments are routed per-item via the `paypalUrl` field in `items.json` (a `paypal.me` link). The recipient name shown to buyers comes from whoever owns that paypal.me handle — no separate email is displayed in the UI.

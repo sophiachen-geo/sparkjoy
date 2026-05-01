@@ -141,16 +141,12 @@ Same pattern: branch `claude/edit-<id>`, change only what was asked, PR.
 - When you can't do something (e.g. extract photo bytes from a chat-attached image), say so plainly and propose the simplest workaround.
 - Run a quick local check before declaring done: `python3 -m http.server` and curl `/`, `/items.json`, etc.
 
-## Payment recipients & contact email
+## Contact email
 
-Two distinct emails:
+Defined once in `app.js` as `CONTACT_EMAIL`. Same string used in:
+- `index.html` "How to buy" e-transfer line
+- `README.md` example block
 
-- **Contact / Interac e-transfer recipient** — defined once in `app.js` as `CONTACT_EMAIL`. Used by:
-  - the contact link in `index.html` (rendered into `#contactEmail` by JS)
-  - the prefilled mailto subject/body for the modal "Email me" button
-  - the "How to buy" payment-recipients line in `index.html`
-  - the README example block
+If the user changes it, update all three.
 
-- **PayPal recipient** — hardcoded in `index.html` inside the "How to buy" payment-recipients line. Not used elsewhere (the actual PayPal button URL lives per-item in `items.json` as `paypalUrl`).
-
-If the user changes either email, update all the spots above.
+PayPal payments are routed per-item via the `paypalUrl` field in `items.json` (a `paypal.me` link). The recipient name shown to buyers comes from whoever owns that paypal.me handle — no separate email address is displayed in the UI.
