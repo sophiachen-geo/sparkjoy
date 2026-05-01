@@ -54,12 +54,11 @@ This works because the project has a `CLAUDE.md` file that tells Claude exactly 
 
 ### 1. Upload photos to `assets/_inbox/`
 
-On the GitHub mobile app or `github.com` in your browser:
+🔖 **One-tap bookmark:** [github.com/sophiachen-geo/sparkjoy/upload/main/assets/\_inbox](https://github.com/sophiachen-geo/sparkjoy/upload/main/assets/_inbox)
 
-1. Navigate to `assets/_inbox/` on the branch you're working on (or `main`).
-2. Tap **Add file → Upload files**.
-3. Pick the photos from your phone. Filenames don't matter — keep whatever your phone gave them (e.g. `IMG_1234.jpeg`). Claude will rename them.
-4. Commit the upload.
+That URL opens GitHub's upload page directly inside `assets/_inbox/`. Save it to your phone's home screen for one-tap access. From there: pick photos → "Commit changes" → done. Filenames don't matter — keep whatever your phone gives them (e.g. `IMG_1234.jpeg`). Claude will rename them on intake.
+
+If you'd rather navigate manually: GitHub mobile app or `github.com` → `assets/_inbox/` → **Add file → Upload files** → commit.
 
 ### 2. Tell Claude what to do
 
@@ -77,9 +76,11 @@ currency: CAD
 category: Furniture
 condition: Gently used
 status: available
-photos: assets/_inbox/IMG_1234.jpeg, assets/_inbox/IMG_1235.jpeg
+photos: IMG_1234.jpeg, IMG_1235.jpeg
 featured: 1
 ```
+
+For `photos:`, just the filenames are enough — Claude assumes they're in `assets/_inbox/`. Full paths (`assets/_inbox/IMG_1234.jpeg`) also work if you prefer being explicit.
 
 **Change a product's status**
 
