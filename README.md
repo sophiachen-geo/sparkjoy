@@ -5,13 +5,15 @@ A simple, static catalog site for selling secondhand items. Plain HTML/CSS/JavaS
 ## Project layout
 
 ```
-index.html      Public catalog page
-styles.css      Shared styles (used by both index.html and admin.html)
-app.js          Public site logic (loads items.json, renders cards + modal)
-items.json      The product catalog (single source of truth)
-assets/         Product photos (one folder for everything)
-admin.html      Local helper to add/edit items and status (NOT linked from the public site)
-admin.js        Logic for the helper
+index.html        Public catalog page
+styles.css        Shared styles (used by both index.html and admin.html)
+app.js            Public site logic (loads items.json, renders cards + modal)
+items.json        The product catalog (single source of truth)
+assets/           Product photos (one folder for everything)
+assets/_inbox/    Drop zone for raw phone uploads — Claude renames them on intake
+admin.html        Local helper to add/edit items and status (NOT linked from the public site)
+admin.js          Logic for the helper
+CLAUDE.md         Instructions for Claude — defines the chat intake protocol
 ```
 
 ## Running locally
@@ -33,7 +35,69 @@ Then open:
 - Public site: <http://localhost:8000/>
 - Local helper: <http://localhost:8000/admin.html>
 
-## Adding a new product
+## Two ways to add or update a product
+
+You have two options, depending on whether you're at your computer or on your phone:
+
+| Where you are | Workflow |
+|---|---|
+| **On your phone** | Use the **chat intake** below — upload photos to GitHub, send Claude the details in chat, tap-merge the PR. |
+| **At your computer** | Use the **local helper** (`admin.html`) — fill in a form, download `items.json`, commit. |
+
+Both paths edit the same `items.json` and end with a normal git commit.
+
+---
+
+## Chat intake (phone-friendly)
+
+This works because the project has a `CLAUDE.md` file that tells Claude exactly how to handle the workflow. You just paste a template in chat and Claude does the rest (creates a branch, renames photos, updates `items.json`, opens a PR for you to merge).
+
+### 1. Upload photos to `assets/_inbox/`
+
+On the GitHub mobile app or `github.com` in your browser:
+
+1. Navigate to `assets/_inbox/` on the branch you're working on (or `main`).
+2. Tap **Add file → Upload files**.
+3. Pick the photos from your phone. Filenames don't matter — keep whatever your phone gave them (e.g. `IMG_1234.jpeg`). Claude will rename them.
+4. Commit the upload.
+
+### 2. Tell Claude what to do
+
+Paste one of these templates in chat. Fill in only the fields you have — anything optional can be omitted.
+
+**Add a product**
+
+```
+/add-product
+title: Teak side table
+shortDescription: Mid-century, oiled.
+description: 50 × 40 × 55 cm. Minor scuffs on the legs.
+price: 80
+currency: CAD
+category: Furniture
+condition: Gently used
+status: available
+photos: assets/_inbox/IMG_1234.jpeg, assets/_inbox/IMG_1235.jpeg
+featured: 1
+```
+
+**Change a product's status**
+
+```
+/set-status apple-61w-01 sold
+```
+
+Statuses: `available` / `reserved` / `sold`.
+
+You can also describe the change casually ("mark the apple adapter with cord as reserved"). Claude will ask one question if anything is ambiguous.
+
+### 3. Merge the PR
+
+Claude opens a PR with the changes. You tap **Merge pull request** on your phone. GitHub Pages redeploys automatically.
+
+---
+
+## Local helper (computer)
 
 1. Open the local helper: <http://localhost:8000/admin.html>
 2. The helper auto-loads `items.json` on page open (or click **Load from items.json**).
@@ -51,28 +115,22 @@ Then open:
 5. Drop the actual image files into `assets/`, named to match the paths you typed.
 6. In section **4. Updated items.json**, click **Download items.json** and replace the file in the project root with the downloaded one. Commit both the new images and the updated JSON.
 
-## Marking a product as available / reserved / sold
+### Changing status from the local helper
 
 1. Open <http://localhost:8000/admin.html>.
-2. The catalog loads automatically. In section **2. Update status**, find the item and change the dropdown to `available`, `reserved`, or `sold`.
-3. Click **Download items.json** in section 4 and replace the file in the project root.
-4. Commit and push — the public site will reflect the new status (with badges, a corner ribbon, and a dimmed/struck-through visual treatment for sold items).
+2. In section **2. Update status**, change the dropdown next to the item.
+3. **Download items.json** in section 4, replace the file in the project root, commit, push.
 
-You can also do this by editing `items.json` directly — the `status` field on any item accepts `"available"`, `"reserved"`, or `"sold"`.
+You can also edit `items.json` directly — the `status` field accepts `"available"`, `"reserved"`, or `"sold"`.
 
 ## Image workflow
 
 - **Where**: all product photos go in `assets/`.
+- **Inbox**: photos uploaded from your phone live temporarily in `assets/_inbox/`. Claude moves them to canonical names during chat intake.
 - **Naming**: `assets/<id>-1.jpg`, `assets/<id>-2.jpg`, etc. Predictable and easy to grep.
 - **Formats**: any browser-supported format (`.jpg`, `.png`, `.webp`).
 - **Paths**: always written as a relative path from the project root, e.g. `assets/foo-1.jpg`. This works locally and on static hosts like GitHub Pages.
 - **Fallback**: if a photo path is missing or fails to load, the site shows a polished "Photo coming soon" placeholder instead of a broken-image icon.
-
-### ⚠️ The two existing image files are empty stubs
-
-The two files currently in `assets/` (`apple-61w-with-cord-1.jpg` and `apple-61w-no-cord-1.jpg`) are **2-byte text files containing only `\r\n`** — they are not real JPEGs. That is why the images don't display on the public site.
-
-To fix them, replace each one with the actual photo at the same filename. The site will then render correctly with no other changes needed.
 
 ## Local helper safety notes
 
