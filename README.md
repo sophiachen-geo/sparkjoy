@@ -121,7 +121,7 @@ Only `id`, `title`, `price`, `currency`, `category`, `condition`, and `status` a
 The site uses one contact email defined at the top of `app.js`:
 
 ```js
-const CONTACT_EMAIL = "thegoldenratio.geo@icloud.com";
+const CONTACT_EMAIL = "sophiazilisha@hotmail.com";
 ```
 
 Change it once there and it updates the contact link, the mailto buttons, and the e-transfer instructions in the email body.
