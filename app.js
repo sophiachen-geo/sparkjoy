@@ -4,7 +4,7 @@
 // Single source of truth for the public contact email.
 // Change it here and it updates the contact link, mailto buttons,
 // and the e-transfer instructions in the email body.
-const CONTACT_EMAIL = "thegoldenratio.geo@icloud.com";
+const CONTACT_EMAIL = "sophiazilisha@hotmail.com";
 
 const STATUS_LABELS = {
   available: "Available",
