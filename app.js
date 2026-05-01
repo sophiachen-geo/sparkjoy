@@ -1,11 +1,10 @@
 // Spark Joy — public catalog logic.
 // Reads items.json and renders cards + modal. No build step.
 
-// TODO: confirm which contact email is correct.
-// "How to buy" copy currently says sophiazilisha@hotmail.com,
-// the original app.js had sophiazilisha@email.com (probably a typo).
-// Change it in ONE place here:
-const CONTACT_EMAIL = "sophiazilisha@hotmail.com";
+// Single source of truth for the public contact email.
+// Change it here and it updates the contact link, mailto buttons,
+// and the e-transfer instructions in the email body.
+const CONTACT_EMAIL = "thegoldenratio.geo@icloud.com";
 
 const STATUS_LABELS = {
   available: "Available",
